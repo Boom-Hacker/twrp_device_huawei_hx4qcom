@@ -1,0 +1,19 @@
+on init
+    mkdir /cust
+
+    # vm_bms
+    chown root system /sys/class/power_supply/bms/current_now
+    chown root system /sys/class/power_supply/bms/voltage_ocv
+    chmod 0664 /sys/class/power_supply/bms/current_now
+    chmod 0664 /sys/class/power_supply/bms/voltage_ocv
+    start vm_bms
+
+on init
+    symlink /dev/block/platform/soc.0/${ro.boot.bootdevice} /dev/block/bootdevice
+
+service vm_bms /sbin/vm_bms
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
